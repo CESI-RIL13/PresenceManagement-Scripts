@@ -6,9 +6,14 @@ if [ -e $process ]; then
 	ps ax | grep $process | grep -v grep | grep -v $0
 	# si il y a un résultat
 	if [ $? -eq 0 ]; then
-		echo "le script est actuellement en train de tourner"
+		nbLigne= ps ax | grep $process | grep -v grep | grep -v $0 | wc -l
+		if [ $nbLigne -le 1 ]; then
+			/etc/init.d/monserveur start
+		else
+			echo "le script est actuellement en train de tourner"
+		fi
 	else 
-		/etc/init.d/monserveur restart
+		/etc/init.d/monserveur start
 	fi
 else
 	echo $1 + "n'existe pas"
